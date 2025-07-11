@@ -41,14 +41,14 @@ func (s *SmtpEmailService) sendEmail(to, subject, body string) error {
 	return nil
 }
 
-func (s *SmtpEmailService) SendSignUp2FAEmail(to, otp string) error {
-	subject := "Your 2FA Sign-Up Code"
-	body := "<p>Thank you for signing up! Your 2FA code is: <strong>" + otp + "</strong></p>"
+func (s *SmtpEmailService) SendSignUpMFAEmail(to, otp string) error {
+	subject := "Your MFA Sign-Up Code"
+	body := "<p>Thank you for signing up! Your MFA code is: <strong>" + otp + "</strong></p>"
 	return s.sendEmail(to, subject, body)
 }
 
-func (s *SmtpEmailService) SendSignIn2FAEmail(to, otp string) error {
-	subject := "Your 2FA Sign-In Code"
-	body := "<p>Your 2FA sign-in code is: <strong>" + otp + "</strong></p>"
+func (s *SmtpEmailService) SendSignInMFAEmail(to, otp string) error {
+	subject := "Your MFA Sign-In Code"
+	body := "<p>Your MFA sign-in code is: <strong>" + otp + "</strong></p>"
 	return s.sendEmail(to, subject, body)
 }

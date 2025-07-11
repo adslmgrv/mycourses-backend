@@ -1,12 +1,12 @@
 package service
 
-import "github.com/adslmgrv/mycourses-backend/auth-service/internal/repo"
+import "github.com/adslmgrv/mycourses-backend/auth-service/internal/repository"
 
 type UserService struct {
-	repo repo.UserRepo
+	repo repository.UserRepository
 }
 
-func NewUserService(repo repo.UserRepo) UserService {
+func NewUserService(repo repository.UserRepository) UserService {
 	return UserService{
 		repo: repo,
 	}

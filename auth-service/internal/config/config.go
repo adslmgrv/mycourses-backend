@@ -11,6 +11,7 @@ const (
 
 type AppConfig struct {
 	Environment             string
+	MongodbDatabaseName     string
 	MongodbConnectionString string
 	RedisConnectionString   string
 }
@@ -29,6 +30,7 @@ func LoadAppConfig() *AppConfig {
 	}
 
 	appConfig.MongodbConnectionString = os.Getenv("MONGODB_CONNECTION_STRING")
+	appConfig.MongodbDatabaseName = os.Getenv("MONGODB_DATABASE_NAME")
 	appConfig.RedisConnectionString = os.Getenv("REDIS_CONNECTION_STRING")
 
 	return appConfig

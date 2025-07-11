@@ -10,7 +10,7 @@ import (
 const (
 	InvalidCredentialsError AppErrorKind = iota
 	EmailTakenError
-	TfaFailedError
+	MfaFailedError
 	BadRequestError
 )
 

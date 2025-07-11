@@ -1,4 +1,4 @@
-package repo
+package repository
 
 import (
 	"context"
@@ -10,17 +10,17 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type MongoUserRepo struct {
+type UserMongoRepository struct {
 	collection *mongo.Collection
 }
 
-func NewMongoUserRepo(db *mongo.Database) *MongoUserRepo {
-	return &MongoUserRepo{
+func NewUserMongoRepository(db *mongo.Database) *UserMongoRepository {
+	return &UserMongoRepository{
 		collection: db.Collection("users"),
 	}
 }
 
-func (r *MongoUserRepo) FindByEmail(ctx context.Context, email string) (*model.User, error) {
+func (r *UserMongoRepository) FindByEmail(ctx context.Context, email string) (*model.User, error) {
 	var user model.User
 
 	if err := r.collection.FindOne(ctx, bson.M{"email": email}).Decode(&user); err != nil {
@@ -34,7 +34,7 @@ func (r *MongoUserRepo) FindByEmail(ctx context.Context, email string) (*model.U
 	return &user, nil
 }
 
-func (r *MongoUserRepo) UpdatePasswordHashByEmail(ctx context.Context, email string, passwordHash []byte) error {
+func (r *UserMongoRepository) UpdatePasswordHashByEmail(ctx context.Context, email string, passwordHash []byte) error {
 	_, err := r.collection.UpdateOne(ctx, bson.M{"email": email}, bson.M{"$set": bson.M{"passwordHash": passwordHash}})
 
 	if err != nil {
@@ -44,7 +44,7 @@ func (r *MongoUserRepo) UpdatePasswordHashByEmail(ctx context.Context, email str
 	return nil
 }
 
-func (r *MongoUserRepo) CreateUser(ctx context.Context, user *model.User) error {
+func (r *UserMongoRepository) CreateUser(ctx context.Context, user *model.User) error {
 	_, err := r.collection.InsertOne(ctx, user)
 
 	if err != nil {

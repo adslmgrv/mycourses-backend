@@ -1,1 +1,8 @@
 go 1.24.5
+
+use (
+	./auth-service
+	./common
+)
+
+replace github.com/adslmgrv/mycourses-backend/common v0.0.0 => ./common

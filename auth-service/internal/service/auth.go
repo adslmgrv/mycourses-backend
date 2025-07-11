@@ -9,17 +9,17 @@ import (
 	"github.com/adslmgrv/mycourses-backend/auth-service/internal/domain"
 	appe "github.com/adslmgrv/mycourses-backend/auth-service/internal/error"
 	"github.com/adslmgrv/mycourses-backend/auth-service/internal/model"
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/repo"
+	"github.com/adslmgrv/mycourses-backend/auth-service/internal/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthService struct {
-	userRepo     repo.UserRepo
-	tfaRepo      repo.TfaRepo
+	userRepo     repository.UserRepository
+	tfaRepo      repository.MfaRepository
 	emailService EmailService
 }
 
-func NewAuthService(userRepo repo.UserRepo, tfaRepo repo.TfaRepo, emailService EmailService) AuthService {
+func NewAuthService(userRepo repository.UserRepository, tfaRepo repository.MfaRepository, emailService EmailService) AuthService {
 	return AuthService{
 		userRepo:     userRepo,
 		tfaRepo:      tfaRepo,
@@ -60,22 +60,22 @@ func (s AuthService) SignUp(ctx context.Context, request domain.SignUpRequest) e
 	}
 
 	otp := newSixDigitOtp()
-	err = s.tfaRepo.Set2FAOtp(ctx, request.Email, otp)
+	err = s.tfaRepo.SetMFAOtp(ctx, request.Email, otp)
 	if err != nil {
 		return err
 	}
 
-	return s.emailService.SendSignUp2FAEmail(request.Email, otp)
+	return s.emailService.SendSignUpMFAEmail(request.Email, otp)
 }
 
-func (s AuthService) Submit2FAOtp(ctx context.Context, request domain.Submit2FAOtpRequest) (*domain.SessionResponse, error) {
-	otp, err := s.tfaRepo.Get2FAOtpByEmail(ctx, request.Email)
+func (s AuthService) SubmitMFAOtp(ctx context.Context, request domain.SubmitMFAOtpRequest) (*domain.SessionResponse, error) {
+	otp, err := s.tfaRepo.GetMFAOtpByEmail(ctx, request.Email)
 	if err != nil {
 		return nil, err
 	}
 
 	if otp != &request.Otp {
-		return nil, appe.Errorf(appe.TfaFailedError, "Invalid 2fa otp")
+		return nil, appe.Errorf(appe.MfaFailedError, "Invalid 2fa otp")
 	}
 
 	return nil, nil
