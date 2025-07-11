@@ -3,37 +3,29 @@ package error
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 )
 
+// Really anything that doesn't turn to Internal Server Error.
 const (
-	InternalError ErrorKind = iota
-	InvalidCredentialsError
+	InvalidCredentialsError AppErrorKind = iota
 	EmailTakenError
 )
 
-type ErrorKind int
+type AppErrorKind int
 
-type Error interface {
+type AppError interface {
 	Message() string
-	Kind() ErrorKind
+	Kind() AppErrorKind
 }
 
-func WriteErrorResponse(w http.ResponseWriter, e Error) {
+func WriteErrorResponse(w http.ResponseWriter, e AppError) {
 	message, kind := e.Message(), e.Kind()
-
-	if kind == InternalError {
-		message = "An internal error occurred. Please try again later."
-		log.Printf("Internal error occurred: %s", message)
-	}
 
 	w.Header().Set("Content-Type", "application/json")
 
 	w.WriteHeader(func() int {
 		switch kind {
-		case InternalError:
-			return http.StatusInternalServerError
 		case InvalidCredentialsError:
 			return http.StatusUnauthorized
 		default:
@@ -58,20 +50,24 @@ func WriteErrorResponse(w http.ResponseWriter, e Error) {
 
 type errorWrap struct {
 	message string
-	kind    ErrorKind
+	kind    AppErrorKind
 }
 
-func Errorf(kind ErrorKind, format string, args ...any) errorWrap {
+func Errorf(kind AppErrorKind, format string, args ...any) errorWrap {
 	return errorWrap{
 		message: fmt.Errorf(format, args...).Error(),
 		kind:    kind,
 	}
 }
 
+func (e errorWrap) Error() string {
+	return e.message
+}
+
 func (e errorWrap) Message() string {
 	return e.message
 }
 
-func (e errorWrap) Kind() ErrorKind {
+func (e errorWrap) Kind() AppErrorKind {
 	return e.kind
 }
