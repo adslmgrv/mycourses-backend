@@ -6,10 +6,10 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/adslmgrv/mycourses-backend/auth-service/dto"
-	appe "github.com/adslmgrv/mycourses-backend/auth-service/error"
-	"github.com/adslmgrv/mycourses-backend/auth-service/model"
-	"github.com/adslmgrv/mycourses-backend/auth-service/repo"
+	"github.com/adslmgrv/mycourses-backend/auth-service/internal/dto"
+	appe "github.com/adslmgrv/mycourses-backend/auth-service/internal/error"
+	"github.com/adslmgrv/mycourses-backend/auth-service/internal/model"
+	"github.com/adslmgrv/mycourses-backend/auth-service/internal/repo"
 	"golang.org/x/crypto/bcrypt"
 )
 

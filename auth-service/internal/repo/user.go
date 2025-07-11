@@ -3,7 +3,7 @@ package repo
 import (
 	"context"
 
-	"github.com/adslmgrv/mycourses-backend/auth-service/model"
+	"github.com/adslmgrv/mycourses-backend/auth-service/internal/model"
 )
 
 type UserRepo interface {

@@ -11,6 +11,7 @@ const (
 	InvalidCredentialsError AppErrorKind = iota
 	EmailTakenError
 	TfaFailedError
+	BadRequestError
 )
 
 type AppErrorKind int
