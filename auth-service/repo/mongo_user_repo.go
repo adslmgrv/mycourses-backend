@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	appe "github.com/adslmgrv/mycourses-backend/auth-service/app-error"
+	appe "github.com/adslmgrv/mycourses-backend/auth-service/error"
 	"github.com/adslmgrv/mycourses-backend/auth-service/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"

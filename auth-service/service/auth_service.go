@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/adslmgrv/mycourses-backend/auth-service/dto"
+	appe "github.com/adslmgrv/mycourses-backend/auth-service/error"
 	"github.com/adslmgrv/mycourses-backend/auth-service/model"
 	"github.com/adslmgrv/mycourses-backend/auth-service/repo"
 	"golang.org/x/crypto/bcrypt"
@@ -65,6 +66,19 @@ func (s AuthService) SignUp(ctx context.Context, request dto.SignUpRequest) erro
 	}
 
 	return s.emailService.SendSignUp2FAEmail(request.Email, otp)
+}
+
+func (s AuthService) Submit2FAOtp(ctx context.Context, request dto.Submit2FAOtpRequest) (*dto.SessionResponse, error) {
+	otp, err := s.tfaRepo.Get2FAOtpByEmail(ctx, request.Email)
+	if err != nil {
+		return nil, err
+	}
+
+	if otp != &request.Otp {
+		return nil, appe.Errorf(appe.TfaFailedError, "Invalid 2fa otp")
+	}
+
+	return nil, nil
 }
 
 func newSixDigitOtp() string {

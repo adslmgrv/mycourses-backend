@@ -10,6 +10,7 @@ import (
 const (
 	InvalidCredentialsError AppErrorKind = iota
 	EmailTakenError
+	TfaFailedError
 )
 
 type AppErrorKind int

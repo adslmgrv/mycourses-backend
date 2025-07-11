@@ -16,9 +16,9 @@ type SignInResponse struct {
 	Session       *SessionResponse `json:"session,omitempty"`
 }
 
-type Submit2FACodeRequest struct {
+type Submit2FAOtpRequest struct {
 	Email string `json:"email" validate:"required,email"`
-	Code  string `json:"code" validate:"required,min=6,max=6"`
+	Otp   string `json:"otp" validate:"required,len=6"`
 }
 
 type SessionResponse struct {
