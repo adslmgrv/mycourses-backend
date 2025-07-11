@@ -6,10 +6,10 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/domain"
-	appe "github.com/adslmgrv/mycourses-backend/auth-service/internal/error"
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/model"
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/repository"
+	"github.com/adslmgrv/mycourses-backend/auth/internal/domain"
+	apperr "github.com/adslmgrv/mycourses-backend/auth/internal/error"
+	"github.com/adslmgrv/mycourses-backend/auth/internal/model"
+	"github.com/adslmgrv/mycourses-backend/auth/internal/repository"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -75,7 +75,7 @@ func (s AuthService) SubmitMFAOtp(ctx context.Context, request domain.SubmitMFAO
 	}
 
 	if otp != &request.Otp {
-		return nil, appe.Errorf(appe.MfaFailedError, "Invalid 2fa otp")
+		return nil, apperr.Errorf(apperr.MfaFailedError, "Invalid 2fa otp")
 	}
 
 	return nil, nil

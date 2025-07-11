@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/model"
+	"github.com/adslmgrv/mycourses-backend/auth/internal/model"
 )
 
 type UserRepository interface {

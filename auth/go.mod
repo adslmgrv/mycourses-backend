@@ -1,4 +1,4 @@
-module github.com/adslmgrv/mycourses-backend/auth-service
+module github.com/adslmgrv/mycourses-backend/auth
 
 go 1.24.5
 

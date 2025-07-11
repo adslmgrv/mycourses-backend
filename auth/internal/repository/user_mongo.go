@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	appe "github.com/adslmgrv/mycourses-backend/auth-service/internal/error"
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/model"
+	apperr "github.com/adslmgrv/mycourses-backend/auth/internal/error"
+	"github.com/adslmgrv/mycourses-backend/auth/internal/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -49,7 +49,7 @@ func (r *UserMongoRepository) CreateUser(ctx context.Context, user model.User) e
 
 	if err != nil {
 		if mongo.IsDuplicateKeyError(err) {
-			return appe.Errorf(appe.EmailTakenError, "email is already taken")
+			return apperr.Errorf(apperr.EmailTakenError, "email is already taken")
 		}
 		return fmt.Errorf("failed to create user: %w", err)
 	}

@@ -4,10 +4,10 @@ import (
 	"context"
 	"log"
 
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/config"
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/controller/v1"
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/repository"
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/service"
+	"github.com/adslmgrv/mycourses-backend/auth/internal/config"
+	v1 "github.com/adslmgrv/mycourses-backend/auth/internal/controller/v1"
+	"github.com/adslmgrv/mycourses-backend/auth/internal/repository"
+	"github.com/adslmgrv/mycourses-backend/auth/internal/service"
 	"github.com/adslmgrv/mycourses-backend/common/pkg/database"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -45,7 +45,6 @@ func main() {
 	authService := service.NewAuthService(userRepository, mfaRepository, smtpEmailService)
 
 	r := gin.Default()
-	authControllerV1 := v1.NewAuthController(authService)
-	r.POST("/api/v1/auth/users", authControllerV1.SignUp)
+	v1.NewAuthController(authService).MakeRoutes(r)
 	r.Run()
 }
