@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/adslmgrv/mycourses-backend/auth-service/internal/dto"
+	"github.com/adslmgrv/mycourses-backend/auth-service/internal/domain"
 	appe "github.com/adslmgrv/mycourses-backend/auth-service/internal/error"
 	"github.com/adslmgrv/mycourses-backend/auth-service/internal/model"
 	"github.com/adslmgrv/mycourses-backend/auth-service/internal/repo"
@@ -27,7 +27,7 @@ func NewAuthService(userRepo repo.UserRepo, tfaRepo repo.TfaRepo, emailService E
 	}
 }
 
-func (s AuthService) SignUp(ctx context.Context, request dto.SignUpRequest) error {
+func (s AuthService) SignUp(ctx context.Context, request domain.SignUpRequest) error {
 	user, err := s.userRepo.FindByEmail(ctx, request.Email)
 	if err != nil {
 		return err
@@ -68,7 +68,7 @@ func (s AuthService) SignUp(ctx context.Context, request dto.SignUpRequest) erro
 	return s.emailService.SendSignUp2FAEmail(request.Email, otp)
 }
 
-func (s AuthService) Submit2FAOtp(ctx context.Context, request dto.Submit2FAOtpRequest) (*dto.SessionResponse, error) {
+func (s AuthService) Submit2FAOtp(ctx context.Context, request domain.Submit2FAOtpRequest) (*domain.SessionResponse, error) {
 	otp, err := s.tfaRepo.Get2FAOtpByEmail(ctx, request.Email)
 	if err != nil {
 		return nil, err
