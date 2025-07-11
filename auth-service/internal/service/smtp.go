@@ -7,13 +7,13 @@ import (
 
 type SmtpEmailService struct {
 	Host     string
-	Port     int
+	Port     uint16
 	Username string
 	Password string
 	From     string
 }
 
-func NewSmtpEmailService(host string, port int, username, password, from string) *SmtpEmailService {
+func NewSmtpEmailService(host string, port uint16, username, password, from string) *SmtpEmailService {
 	return &SmtpEmailService{
 		Host:     host,
 		Port:     port,

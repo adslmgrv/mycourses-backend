@@ -1,10 +1,9 @@
-package controller
+package v1
 
 import (
 	"net/http"
 
 	"github.com/adslmgrv/mycourses-backend/auth-service/internal/domain"
-	appe "github.com/adslmgrv/mycourses-backend/auth-service/internal/error"
 	"github.com/adslmgrv/mycourses-backend/auth-service/internal/service"
 	"github.com/gin-gonic/gin"
 )
@@ -19,22 +18,22 @@ func NewAuthController(authService service.AuthService) AuthController {
 	}
 }
 
-func (a *AuthController) SignUp(c *gin.Context) error {
+func (a *AuthController) SignUp(c *gin.Context) {
 	var request domain.SignUpRequest
 
-	err := c.BindJSON(&request)
+	c.BindJSON(&request)
 
-	if err != nil {
-		return appe.Errorf(appe.BadRequestError, "Invalid request body")
-	}
+	// if err != nil {
+	// 	return appe.Errorf(appe.BadRequestError, "Invalid request body")
+	// }
 
-	err = a.authService.SignUp(c.Request.Context(), request)
+	a.authService.SignUp(c.Request.Context(), request)
 
-	if err != nil {
-		return err
-	}
+	// if err != nil {
+	// 	return err
+	// }
 
 	c.Status(http.StatusCreated)
 
-	return nil
+	// return nil
 }

@@ -14,21 +14,21 @@ import (
 )
 
 type AuthService struct {
-	userRepo     repository.UserRepository
-	tfaRepo      repository.MfaRepository
-	emailService EmailService
+	userRepository repository.UserRepository
+	mfaRepository  repository.MfaRepository
+	emailService   EmailService
 }
 
-func NewAuthService(userRepo repository.UserRepository, tfaRepo repository.MfaRepository, emailService EmailService) AuthService {
+func NewAuthService(userRepository repository.UserRepository, mfaRepository repository.MfaRepository, emailService EmailService) AuthService {
 	return AuthService{
-		userRepo:     userRepo,
-		tfaRepo:      tfaRepo,
-		emailService: emailService,
+		userRepository: userRepository,
+		mfaRepository:  mfaRepository,
+		emailService:   emailService,
 	}
 }
 
 func (s AuthService) SignUp(ctx context.Context, request domain.SignUpRequest) error {
-	user, err := s.userRepo.FindByEmail(ctx, request.Email)
+	user, err := s.userRepository.FindByEmail(ctx, request.Email)
 	if err != nil {
 		return err
 	}
@@ -39,14 +39,14 @@ func (s AuthService) SignUp(ctx context.Context, request domain.SignUpRequest) e
 	}
 
 	if user != nil && !user.IsEmailVerified {
-		err := s.userRepo.UpdatePasswordHashByEmail(ctx, request.Email, passwordHash)
+		err := s.userRepository.UpdatePasswordHashByEmail(ctx, request.Email, passwordHash)
 
 		if err != nil {
 			return err
 		}
 
 	} else {
-		err := s.userRepo.CreateUser(ctx, model.User{
+		err := s.userRepository.CreateUser(ctx, model.User{
 			Name:            request.Name,
 			Email:           request.Email,
 			IsEmailVerified: false,
@@ -60,7 +60,7 @@ func (s AuthService) SignUp(ctx context.Context, request domain.SignUpRequest) e
 	}
 
 	otp := newSixDigitOtp()
-	err = s.tfaRepo.SetMFAOtp(ctx, request.Email, otp)
+	err = s.mfaRepository.SetMFAOtp(ctx, request.Email, otp)
 	if err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func (s AuthService) SignUp(ctx context.Context, request domain.SignUpRequest) e
 }
 
 func (s AuthService) SubmitMFAOtp(ctx context.Context, request domain.SubmitMFAOtpRequest) (*domain.SessionResponse, error) {
-	otp, err := s.tfaRepo.GetMFAOtpByEmail(ctx, request.Email)
+	otp, err := s.mfaRepository.GetMFAOtpByEmail(ctx, request.Email)
 	if err != nil {
 		return nil, err
 	}

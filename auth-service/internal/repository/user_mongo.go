@@ -44,7 +44,7 @@ func (r *UserMongoRepository) UpdatePasswordHashByEmail(ctx context.Context, ema
 	return nil
 }
 
-func (r *UserMongoRepository) CreateUser(ctx context.Context, user *model.User) error {
+func (r *UserMongoRepository) CreateUser(ctx context.Context, user model.User) error {
 	_, err := r.collection.InsertOne(ctx, user)
 
 	if err != nil {
