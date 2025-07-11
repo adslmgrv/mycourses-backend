@@ -3,12 +3,14 @@ package error
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 )
 
 const (
 	InternalError ErrorKind = iota
 	InvalidCredentialsError
+	EmailTakenError
 )
 
 type ErrorKind int
@@ -20,6 +22,11 @@ type Error interface {
 
 func WriteErrorResponse(w http.ResponseWriter, e Error) {
 	message, kind := e.Message(), e.Kind()
+
+	if kind == InternalError {
+		message = "An internal error occurred. Please try again later."
+		log.Printf("Internal error occurred: %s", message)
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 

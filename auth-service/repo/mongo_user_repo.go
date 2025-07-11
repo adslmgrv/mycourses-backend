@@ -37,6 +37,9 @@ func (r *MongoUserRepo) CreateUser(ctx context.Context, user *model.User) error.
 	_, err := r.collection.InsertOne(ctx, user)
 
 	if err != nil {
+		if mongo.IsDuplicateKeyError(err) {
+			return error.Errorf(error.EmailTakenError, "email is already taken")
+		}
 		return error.Errorf(error.InternalError, "failed to create user: %w", err)
 	}
 
