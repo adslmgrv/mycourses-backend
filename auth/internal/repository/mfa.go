@@ -5,6 +5,6 @@ import (
 )
 
 type MfaRepository interface {
-	SetMFAOtp(ctx context.Context, email string, otp string) error
-	GetMFAOtpByEmail(ctx context.Context, email string) (*string, error)
+	SetMfaOtp(ctx context.Context, email string, otp string) error
+	GetMfaOtpByEmail(ctx context.Context, email string) (*string, error)
 }

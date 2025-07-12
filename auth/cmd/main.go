@@ -39,7 +39,7 @@ func main() {
 	}
 
 	userRepository := repository.NewUserMongoRepository(mongodb)
-	mfaRepository := repository.NewMFARedisRepository(redis)
+	mfaRepository := repository.NewMfaRedisRepository(redis)
 
 	smtpEmailService := service.NewSmtpEmailService(config.SmtpHost, config.SmtpPort, config.SmtpUsername, config.SmtpPassword, config.SmtpFrom)
 

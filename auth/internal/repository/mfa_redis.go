@@ -8,15 +8,15 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-type MFARedisRepository struct {
+type MfaRedisRepository struct {
 	client *redis.Client
 }
 
-func NewMFARedisRepository(client *redis.Client) *MFARedisRepository {
-	return &MFARedisRepository{client: client}
+func NewMfaRedisRepository(client *redis.Client) *MfaRedisRepository {
+	return &MfaRedisRepository{client: client}
 }
 
-func (r *MFARedisRepository) SetMFAOtp(ctx context.Context, email string, otp string) error {
+func (r *MfaRedisRepository) SetMfaOtp(ctx context.Context, email string, otp string) error {
 	err := r.client.Set(ctx, fmt.Sprintf("mfaotp:%s", email), otp, 120*time.Second).Err()
 
 	if err != nil {
@@ -26,7 +26,7 @@ func (r *MFARedisRepository) SetMFAOtp(ctx context.Context, email string, otp st
 	return nil
 }
 
-func (r *MFARedisRepository) GetMFAOtpByEmail(ctx context.Context, email string) (*string, error) {
+func (r *MfaRedisRepository) GetMfaOtpByEmail(ctx context.Context, email string) (*string, error) {
 	code, err := r.client.Get(ctx, fmt.Sprintf("mfaotp:%s", email)).Result()
 
 	if err != nil {

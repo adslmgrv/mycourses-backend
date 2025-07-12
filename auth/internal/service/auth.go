@@ -60,16 +60,16 @@ func (s AuthService) SignUp(ctx context.Context, request domain.SignUpRequest) e
 	}
 
 	otp := newSixDigitOtp()
-	err = s.mfaRepository.SetMFAOtp(ctx, request.Email, otp)
+	err = s.mfaRepository.SetMfaOtp(ctx, request.Email, otp)
 	if err != nil {
 		return err
 	}
 
-	return s.emailService.SendSignUpMFAEmail(request.Email, otp)
+	return s.emailService.SendSignUpMfaEmail(request.Email, otp)
 }
 
-func (s AuthService) SubmitMFAOtp(ctx context.Context, request domain.SubmitMFAOtpRequest) (*domain.SessionResponse, error) {
-	otp, err := s.mfaRepository.GetMFAOtpByEmail(ctx, request.Email)
+func (s AuthService) SubmitMfaOtp(ctx context.Context, request domain.SubmitMfaOtpRequest) (*domain.SessionResponse, error) {
+	otp, err := s.mfaRepository.GetMfaOtpByEmail(ctx, request.Email)
 	if err != nil {
 		return nil, err
 	}

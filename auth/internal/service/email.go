@@ -1,6 +1,6 @@
 package service
 
 type EmailService interface {
-	SendSignUpMFAEmail(to string, otp string) error
-	SendSignInMFAEmail(to string, otp string) error
+	SendSignUpMfaEmail(to string, otp string) error
+	SendSignInMfaEmail(to string, otp string) error
 }

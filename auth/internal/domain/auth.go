@@ -12,11 +12,11 @@ type SignInRequest struct {
 }
 
 type SignInResponse struct {
-	IsMFARequired bool             `json:"is_2fa_required"`
+	IsMfaRequired bool             `json:"is_2fa_required"`
 	Session       *SessionResponse `json:"session,omitempty"`
 }
 
-type SubmitMFAOtpRequest struct {
+type SubmitMfaOtpRequest struct {
 	Email string `json:"email" validate:"required,email"`
 	Otp   string `json:"otp" validate:"required,len=6"`
 }
