@@ -9,6 +9,7 @@ import (
 	"github.com/adslmgrv/mycourses-backend/auth/internal/repository"
 	"github.com/adslmgrv/mycourses-backend/auth/internal/service"
 	"github.com/adslmgrv/mycourses-backend/common/pkg/database"
+	"github.com/adslmgrv/mycourses-backend/common/pkg/middleware"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -45,6 +46,9 @@ func main() {
 	authService := service.NewAuthService(userRepository, mfaRepository, smtpEmailService)
 
 	r := gin.Default()
+	r.Use(middleware.LogRequestMiddleware{}.Handle())
+	r.Use(middleware.RequestIdMiddleware{AllowToSet: false}.Handle())
+	r.Use(middleware.DefaultCors().Handle())
 	v1.NewAuthController(authService).MakeRoutes(r)
 	r.Run()
 }

@@ -4,12 +4,11 @@ import (
 	"fmt"
 )
 
-// Really anything that doesn't turn to Internal Server Error.
 const (
-	InvalidCredentialsError AppErrorKind = iota + 1
+	// 0 is for internal server error and 1 is for gin's default errors.
+	InvalidCredentialsError AppErrorKind = iota + 2
 	EmailTakenError
 	MfaFailedError
-	BadRequestError
 )
 
 type AppErrorKind int

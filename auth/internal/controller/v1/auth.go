@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/adslmgrv/mycourses-backend/auth/internal/domain"
@@ -29,7 +30,8 @@ func (a *AuthController) signUp(c *gin.Context) error {
 	err := c.BindJSON(&request)
 
 	if err != nil {
-		return apperr.Errorf(apperr.BadRequestError, "Invalid request body")
+		fmt.Printf("%s", err)
+		return err
 	}
 
 	err = a.authService.SignUp(c.Request.Context(), request)

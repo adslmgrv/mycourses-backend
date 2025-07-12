@@ -35,7 +35,7 @@ func (s AuthService) SignUp(ctx context.Context, request domain.SignUpRequest) e
 
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(request.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return fmt.Errorf("failed to hash password, cause: %s", err)
+		return err
 	}
 
 	if user != nil && !user.IsEmailVerified {

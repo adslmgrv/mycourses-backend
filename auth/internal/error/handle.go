@@ -1,6 +1,7 @@
 package error
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,10 @@ func HandleAppErr(f func(c *gin.Context) error) func(c *gin.Context) {
 			status, kind, message := func() (int, int, string) {
 				if appErr, ok := err.(AppError); ok {
 					return appErr.Kind().httpStatus(), int(appErr.Kind()), appErr.Message()
+				} else if e, ok := err.(gin.Error); ok {
+					return http.StatusBadRequest, 1, e.Error()
 				} else {
+					log.Printf("Cause of internal server error: %s", err)
 					return http.StatusInternalServerError, 0, "Internal server error"
 				}
 			}()
